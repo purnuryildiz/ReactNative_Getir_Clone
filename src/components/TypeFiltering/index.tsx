@@ -52,6 +52,10 @@ export default function index() {
         backgroundColor: "white",
         paddingVertical: height * 0.014,
         paddingHorizontal: 12,
+        borderBottomColor: "lightgrey",
+        borderBottomWidth: 1,
+        shadowColor: "lightColor",
+        shadowOpacity: 0.3,
       }}
       showsHorizontalScrollIndicator={false}
       bounces={true}

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import CategoryFiltering from "../../components/CategoryFiltering";
 import TypeFiltering from "../../components/TypeFiltering";
 import ProductItem from "../../components/ProductItem";
+import ProductsContainer from "../../components/ProductsContainer";
 import { Category } from "../../models";
 export default function index(props) {
   const [category, setCategory] = useState<Category>(props.route.params.category);
@@ -10,7 +11,7 @@ export default function index(props) {
     <ScrollView>
       <CategoryFiltering category={category} />
       <TypeFiltering />
-      <ProductItem />
+      <ProductsContainer />
     </ScrollView>
   );
 }
