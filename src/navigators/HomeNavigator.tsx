@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -6,7 +6,7 @@ import Foundation from "@expo/vector-icons/Foundation";
 import HomeScreen from "../screens/HomeScreen";
 import CategoryFilterScreen from "../screens/CategoryFilterScreen";
 import ProductDetailsScreen from "../screens/ProductDetailsScreen";
-import { TouchableOpacity } from "react-native-gesture-handler";
+
 import {
   useNavigation,
   useRoute,
@@ -15,7 +15,9 @@ import {
 
 const Stack = createStackNavigator();
 
-export default function MyStack() {
+const { width, height } = Dimensions.get("window");
+
+export default function HomeNavigator() {
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -56,6 +58,41 @@ export default function MyStack() {
             <Text style={{ fontWeight: "bold", fontSize: 15, color: "white" }}>
               Ürünler
             </Text>
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              style={{
+                width: width * 0.22,
+                height: 33,
+                backgroundColor: "white",
+                marginRight: width * 0.03,
+                borderRadius: 9,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={require("../../assets/cart.png")}
+                style={{ width: 23, height: 23, marginLeft: 6 }}
+              />
+              <View style={{ height: 33, width: 4, backgroundColor: "white" }} />
+              <View
+                style={{
+                  flex: 1,
+                  height: 33,
+                  backgroundColor: "#f3effe",
+                  borderTopRightRadius: 9,
+                  borderBottomRightRadius: 9,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ color: "#5d3ebd", fontWeight: "bold", fontSize: 12 }}>
+                  <Text>{"\u20BA"} </Text>
+                  24,00
+                </Text>
+              </View>
+            </TouchableOpacity>
           ),
         }}
       />
