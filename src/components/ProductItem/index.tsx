@@ -4,14 +4,16 @@ import React from "react";
 import { Product } from "../../models";
 import { useNavigation } from "@react-navigation/native";
 import productsGetir from "../../../assets/productsGetir";
-
+import { connect } from "react-redux";
+import * as actions from "../../redux/actions/cartActions";
 const { height, width } = Dimensions.get("window");
 
 type productItemType = {
   item: Product;
+  addItemToCart: (a: Product) => void;
 };
 
-export default function index({ item }: productItemType) {
+function index({ item, addItemToCart }: productItemType) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -55,7 +57,7 @@ export default function index({ item }: productItemType) {
       <Text style={{ color: "#747990", fontSize: 12, marginTop: 4, fontWeight: "500" }}>
         {item.miktar}
       </Text>
-      <View
+      <TouchableOpacity
         style={{
           width: 30,
           height: 30,
@@ -71,9 +73,20 @@ export default function index({ item }: productItemType) {
           top: -6,
           borderRadius: 6,
         }}
+        onPress={() => {
+          addItemToCart(item);
+        }}
       >
         <Entypo name="plus" size={22} color="#5d3ebd" />
-      </View>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addItemToCart: (product: Product) =>
+      dispatch(actions.addToCart({ quantity: 1, product })),
+  };
+};
+export default connect(null, mapDispatchToProps)(index);

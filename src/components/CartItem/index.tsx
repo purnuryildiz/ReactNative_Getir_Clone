@@ -25,10 +25,23 @@ export default function index({ product }: CartItemProps) {
         }}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Image
-            source={{ uri: product.image }}
-            style={{ height: height * 0.09, width: height * 0.09 }}
-          />
+          <View
+            style={{
+              borderWidth: 0.4,
+              borderColor: "lightgray",
+              borderRadius: 8,
+              padding: 4,
+            }}
+          >
+            <Image
+              source={{ uri: product.image }}
+              style={{
+                height: height * 0.09,
+                width: height * 0.09,
+              }}
+            />
+          </View>
+
           <View style={{ marginLeft: 8 }}>
             <Text style={{ fontSize: 13, fontWeight: "600", maxWidth: width * 0.46 }}>
               {product.name}

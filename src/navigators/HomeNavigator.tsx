@@ -21,6 +21,7 @@ import {
   getFocusedRouteNameFromRoute,
 } from "@react-navigation/native";
 import styles from "../components/HeaderMain/styles";
+import { connect } from "react-redux";
 
 const Stack = createStackNavigator();
 
@@ -99,7 +100,7 @@ export default function HomeNavigator() {
               >
                 <Text style={{ color: "#5d3ebd", fontWeight: "bold", fontSize: 12 }}>
                   <Text>{"\u20BA"} </Text>
-                  24,00
+                  22,00
                 </Text>
               </View>
             </TouchableOpacity>
@@ -163,3 +164,10 @@ export default function HomeNavigator() {
     </Stack.Navigator>
   );
 }
+
+const mapStateToProps = (state) => {
+  const { cartItems } = state;
+  return {
+    cartItems: cartItems,
+  };
+};
