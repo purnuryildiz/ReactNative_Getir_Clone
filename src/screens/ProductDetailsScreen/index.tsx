@@ -34,7 +34,7 @@ export default function index(props) {
         </Text>
         <DetailProperty />
       </ScrollView>
-      <CardButton />
+      <CardButton item={product} />
     </View>
   );
 }

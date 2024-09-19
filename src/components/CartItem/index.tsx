@@ -1,14 +1,18 @@
-import { View, Text, Image, Dimensions } from "react-native";
+import { View, Text, Image, Dimensions, TouchableOpacity } from "react-native";
 import React from "react";
 import { Product } from "../../models";
+import { connect } from "react-redux";
+import * as actions from "../../redux/actions/cartActions";
 
 type CartItemProps = {
   product: Product;
+  quantity: number;
+  removeFromCart: (product: Product) => void;
 };
 
 const { width, height } = Dimensions.get("window");
 
-export default function index({ product }: CartItemProps) {
+function CartItem({ product, quantity, removeFromCart }: CartItemProps) {
   return (
     <View style={{ width: "100%", backgroundColor: "white" }}>
       <View
@@ -69,9 +73,12 @@ export default function index({ product }: CartItemProps) {
             justifyContent: "space-around",
           }}
         >
-          <View style={{ flex: 1, alignItems: "center" }}>
+          <TouchableOpacity
+            onPress={() => removeFromCart(product)}
+            style={{ flex: 1, alignItems: "center" }}
+          >
             <Text> - </Text>
-          </View>
+          </TouchableOpacity>
           <View
             style={{
               flex: 1,
@@ -81,7 +88,9 @@ export default function index({ product }: CartItemProps) {
               justifyContent: "center",
             }}
           >
-            <Text style={{ color: "white", fontWeight: "bold", fontSize: 12 }}> 1 </Text>
+            <Text style={{ color: "white", fontWeight: "bold", fontSize: 12 }}>
+              {quantity}
+            </Text>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <Text> + </Text>
@@ -91,3 +100,11 @@ export default function index({ product }: CartItemProps) {
     </View>
   );
 }
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    removeFromCart: (product: Product) => dispatch(actions.removeFromCart(product)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CartItem);

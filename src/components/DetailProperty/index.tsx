@@ -26,9 +26,9 @@ function index() {
       >
         <Text
           style={{
-            color: index == 0 ? "black" : "#687482",
+            color: index == 0 ? "#424242" : "#687482",
             fontWeight: index === 0 ? "400" : "500",
-            fontSize: index === 0 ? 10 : 13,
+            fontSize: index === 0 ? 11 : 13,
           }}
         >
           {detail}

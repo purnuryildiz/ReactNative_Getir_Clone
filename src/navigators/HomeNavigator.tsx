@@ -6,7 +6,7 @@ import {
   Dimensions,
   ImageBackground,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Foundation from "@expo/vector-icons/Foundation";
@@ -22,16 +22,24 @@ import {
 } from "@react-navigation/native";
 import styles from "../components/HeaderMain/styles";
 import { connect } from "react-redux";
+import { clearCart } from "../redux/actions/cartActions";
+import * as actions from "../redux/actions/cartActions";
 
 const Stack = createStackNavigator();
 
 const { width, height } = Dimensions.get("window");
 
-export default function HomeNavigator() {
-  const navigation = useNavigation();
-  const route = useRoute();
-
+function MyStack({
+  navigation,
+  route,
+  cartItems,
+  clearCart,
+}: {
+  cartItems: { product: Product; quantity: number }[];
+  clearCart: () => void;
+}) {
   const tabHiddenRoutes = ["ProductDetails", "CartScreen"];
+  const [totalPrice, setTotalPrice] = useState<number>(0);
 
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
@@ -41,6 +49,17 @@ export default function HomeNavigator() {
       navigation.setOptions({ tabBarStyle: { display: "flex" } }); //
     }
   }, [navigation, route]);
+
+  const getProductPrice = () => {
+    var total = 0;
+    cartItems.forEach((cartItem) => {
+      const price = (total += cartItem.product.fiyat);
+      setTotalPrice(price);
+    });
+  };
+  useEffect(() => {
+    getProductPrice();
+  }, [cartItems, navigation]);
 
   return (
     <Stack.Navigator>
@@ -100,7 +119,7 @@ export default function HomeNavigator() {
               >
                 <Text style={{ color: "#5d3ebd", fontWeight: "bold", fontSize: 12 }}>
                   <Text>{"\u20BA"} </Text>
-                  22,00
+                  {totalPrice.toFixed(2)}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -155,7 +174,7 @@ export default function HomeNavigator() {
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity style={{ paddingRight: 8 }}>
+            <TouchableOpacity onPress={() => clearCart()} style={{ paddingRight: 8 }}>
               <Ionicons name="trash" size={26} color="white" />
             </TouchableOpacity>
           ),
@@ -171,3 +190,29 @@ const mapStateToProps = (state) => {
     cartItems: cartItems,
   };
 };
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearCart: () => dispatch(actions.clearCart()),
+  };
+};
+
+function HomeNavigator({
+  navigation,
+  route,
+  cartItems,
+  clearCart,
+}: {
+  clearCart: () => void;
+}) {
+  return (
+    <MyStack
+      navigation={navigation}
+      route={route}
+      cartItems={cartItems}
+      clearCart={clearCart}
+    />
+  );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeNavigator);

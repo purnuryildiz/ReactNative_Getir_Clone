@@ -1,5 +1,5 @@
 import { View, Text, Dimensions, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import productsGetir from "../../../assets/productsGetir";
 import { FlatList } from "react-native";
 import CartItem from "../../components/CartItem";
@@ -10,12 +10,28 @@ import { Product } from "../../models";
 
 const { width, height } = Dimensions.get("window");
 function index({ cartItems }: { cartItems: { product: Product; quantity: number }[] }) {
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const getProductPrice = () => {
+    let total = 0;
+    cartItems.forEach((item) => {
+      total += item.product.fiyat;
+      setTotalPrice(total);
+    });
+    cartItems.length ? null : setTotalPrice(0);
+  };
+
+  useEffect(() => {
+    getProductPrice();
+  }, [cartItems]);
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
         <FlatList
           data={cartItems}
-          renderItem={({ item }) => <CartItem product={item.product} />}
+          renderItem={({ item }) => (
+            <CartItem product={item.product} quantity={item.quantity} />
+          )}
         />
 
         <Text style={{ padding: 15, fontWeight: "bold", color: "#5d3ebd" }}>
@@ -79,7 +95,7 @@ function index({ cartItems }: { cartItems: { product: Product; quantity: number 
             }}
           >
             <Text>{"\u20BA"}</Text>
-            24,00
+            {totalPrice.toFixed(2)}
           </Text>
         </View>
       </View>
